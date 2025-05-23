@@ -8,7 +8,6 @@ class ProfileController extends BaseController
 {
     public function index()
     {
-        // Cek apakah user sudah login
         if (!session()->get('isLoggedIn')) {
             return redirect()->to(base_url('login'));
         }
@@ -22,7 +21,6 @@ class ProfileController extends BaseController
             'isLoggedin'  => session()->get('isLoggedIn')
         ];
 
-        // Tampilkan view profile
-        return view('v_profile', $data); // Pastikan file view-nya bernama 'v_profile.php'
+        return view('v_profile', $data); 
     }
 }

@@ -35,12 +35,14 @@ class AuthController extends BaseController
             $dataUser = $this->user->where(['username' => $username])->first(); //pasw 1234567
 
             if ($dataUser) {
-                if (password_verify($password, $dataUser['password'])) {
+               if (password_verify($password, $dataUser['password'])) {
                     session()->set([
-                        'username' => $dataUser['username'],
-                        'role' => $dataUser['role'],
-                        'isLoggedIn' => TRUE
+                        'username'    => $dataUser['username'],
+                        'role'        => $dataUser['role'],
+                        'isLoggedIn'  => TRUE,
+                        'login_time'  => date('Y-m-d H:i:s') // Tambahan ini
                     ]);
+
 
                     return redirect()->to(base_url('/'));
                 } else {

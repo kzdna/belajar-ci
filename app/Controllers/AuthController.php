@@ -41,7 +41,7 @@ class AuthController extends BaseController
                         'role'        => $dataUser['role'],
                         'email'       => $dataUser['email'],
                         'isLoggedIn'  => TRUE,
-                        'login_time'  => date('Y-m-d H:i:s') // Tambahan ini
+                        'login_time'  => date('Y-m-d H:i:s') 
                     ]);
 
 

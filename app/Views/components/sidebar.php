@@ -35,6 +35,13 @@
                 <span>Profile</span>
             </a>
         </li><!-- End Home Nav -->
+
+        <li class="nav-item">
+        <a class="nav-link <?php echo (uri_string() == 'contact') ? "" : "collapsed" ?>" href="contact">
+        <i class="bi bi-person-lines-fill"></i>
+                <span>Contact</span>
+            </a>
+        </li><!-- End Home Nav -->
         <?php
         }
         ?>

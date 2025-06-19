@@ -2,9 +2,7 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
-
 use App\Models\UserModel;
 use App\Models\TransactionModel;
 use App\Models\TransactionDetailModel;
@@ -16,47 +14,39 @@ class ApiController extends ResourceController
     protected $transaction;
     protected $transaction_detail;
 
-    function __construct()
+    public function __construct()
     {
-        $this->apikey = env{'API_KEY'};
+        $this->apikey = getenv('API_KEY');
         $this->user = new UserModel();
         $this->transaction = new TransactionModel();
         $this->transaction_detail = new TransactionDetailModel();
     }
-    /**
-     * Return an array of resource objects, themselves in array format.
-     *
-     * @return ResponseInterface
-     */
+
     public function index()
     {
-        $data = [ 
+        $data = [
             'results' => [],
             'status' => ["code" => 401, "description" => "Unauthorized"]
         ];
 
-        $headers = $this->request->headers(); 
+        $key = $this->request->getHeaderLine('Key'); 
 
-        array_walk($headers, function (&$value, $key) {
-            $value = $value->getValue();
-        });
+        if ($key && $key === $this->apikey) {
+            $penjualan = $this->transaction->findAll();
 
-        if(array_key_exists("Key", $headers)){
-            if ($headers["Key"] == $this->apiKey) {
-                $penjualan = $this->transaction->findAll();
-                
-                foreach ($penjualan as &$pj) {
-                    $pj['details'] = $this->transaction_detail->where('transaction_id', $pj['id'])->findAll();
-                }
-
-                $data['status'] = ["code" => 200, "description" => "OK"];
-                $data['results'] = $penjualan;
-
+            foreach ($penjualan as &$pj) {
+                $pj['details'] = $this->transaction_detail
+                    ->where('transaction_id', $pj['id'])
+                    ->findAll();
             }
-        } 
+
+            $data['status'] = ["code" => 200, "description" => "OK"];
+            $data['results'] = $penjualan;
+        }
 
         return $this->respond($data);
     }
+
 
     /**
      * Return the properties of a resource object.

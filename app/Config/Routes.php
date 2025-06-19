@@ -38,4 +38,4 @@ $routes->get('profile', 'Home::profile', ['filter' => 'auth']);
 $routes->get('faq', 'Home::faq', ['filter'=> 'auth']);
 $routes->get('contact', 'Home::contact', ['filter' => 'auth']);
 
-$routes->resource('api', ['controller' => 'apiController']);
+$routes->resource('api', ['controller' => 'ApiController']);

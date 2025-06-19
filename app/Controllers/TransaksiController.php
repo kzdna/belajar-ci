@@ -72,7 +72,7 @@ class TransaksiController extends BaseController
         return redirect()->to(base_url('keranjang'));
     }
 
-    public function checkout()
+   public function checkout()
     {
         $data['items'] = $this->cart->contents();
         $data['total'] = $this->cart->total();
@@ -136,7 +136,7 @@ class TransaksiController extends BaseController
 
         $body = json_decode($response->getBody(), true); 
         return $this->response->setJSON($body['data']);
-    }
+    }   
 
     public function buy()
 {

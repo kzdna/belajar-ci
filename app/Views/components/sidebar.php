@@ -35,11 +35,12 @@
                 <span>Profile</span>
             </a>
         </li><!-- End Home Nav -->
+
+        
         <?php
         }
         ?>
     </ul>
-
 </aside><!-- End Sidebar-->
     </ul>
 

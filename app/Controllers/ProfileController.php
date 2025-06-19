@@ -23,4 +23,6 @@ class ProfileController extends BaseController
 
         return view('v_profile', $data); 
     }
+
+    
 }

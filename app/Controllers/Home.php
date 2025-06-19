@@ -30,7 +30,7 @@ class Home extends BaseController
         return view('v_home', $data);
     }
 
-   public function profile()
+ public function profile()
 {
     $username = session()->get('username');
     $data['username'] = $username;

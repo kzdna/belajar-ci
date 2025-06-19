@@ -73,70 +73,70 @@ class TransaksiController extends BaseController
     }
 
    public function checkout()
-    {
-        $data['items'] = $this->cart->contents();
-        $data['total'] = $this->cart->total();
+{
+    $data['items'] = $this->cart->contents();
+    $data['total'] = $this->cart->total();
 
-        return view('v_checkout', $data);
-    }
+    return view('v_checkout', $data);
+}
 
     public function getLocation()
-    {
-            //keyword pencarian yang dikirimkan dari halaman checkout
-        $search = $this->request->getGet('search');
+{
+		//keyword pencarian yang dikirimkan dari halaman checkout
+    $search = $this->request->getGet('search');
 
-        $response = $this->client->request(
-            'GET', 
-            'https://rajaongkir.komerce.id/api/v1/destination/domestic-destination?search='.$search.'&limit=50', [
-                'headers' => [
-                    'accept' => 'application/json',
-                    'key' => $this->apiKey,
+    $response = $this->client->request(
+        'GET', 
+        'https://rajaongkir.komerce.id/api/v1/destination/domestic-destination?search='.$search.'&limit=50', [
+            'headers' => [
+                'accept' => 'application/json',
+                'key' => $this->apiKey,
+            ],
+        ]
+    );
+
+    $body = json_decode($response->getBody(), true); 
+    return $this->response->setJSON($body['data']);
+}
+
+public function getCost()
+{ 
+		//ID lokasi yang dikirimkan dari halaman checkout
+    $destination = $this->request->getGet('destination');
+
+		//parameter daerah asal pengiriman, berat produk, dan kurir dibuat statis
+    //valuenya => 64999 : PEDURUNGAN TENGAH , 1000 gram, dan JNE
+    $response = $this->client->request(
+        'POST', 
+        'https://rajaongkir.komerce.id/api/v1/calculate/domestic-cost', [
+            'multipart' => [
+                [
+                    'name' => 'origin',
+                    'contents' => '64999'
                 ],
-            ]
-        );
-
-        $body = json_decode($response->getBody(), true); 
-        return $this->response->setJSON($body['data']);
-    }
-
-    public function getCost()
-    { 
-            //ID lokasi yang dikirimkan dari halaman checkout
-        $destination = $this->request->getGet('destination');
-
-            //parameter daerah asal pengiriman, berat produk, dan kurir dibuat statis
-        //valuenya => 64999 : PEDURUNGAN TENGAH , 1000 gram, dan JNE
-        $response = $this->client->request(
-            'POST', 
-            'https://rajaongkir.komerce.id/api/v1/calculate/domestic-cost', [
-                'multipart' => [
-                    [
-                        'name' => 'origin',
-                        'contents' => '64999'
-                    ],
-                    [
-                        'name' => 'destination',
-                        'contents' => $destination
-                    ],
-                    [
-                        'name' => 'weight',
-                        'contents' => '1000'
-                    ],
-                    [
-                        'name' => 'courier',
-                        'contents' => 'jne'
-                    ]
+                [
+                    'name' => 'destination',
+                    'contents' => $destination
                 ],
-                'headers' => [
-                    'accept' => 'application/json',
-                    'key' => $this->apiKey,
+                [
+                    'name' => 'weight',
+                    'contents' => '1000'
                 ],
-            ]
-        );
+                [
+                    'name' => 'courier',
+                    'contents' => 'jne'
+                ]
+            ],
+            'headers' => [
+                'accept' => 'application/json',
+                'key' => $this->apiKey,
+            ],
+        ]
+    );
 
-        $body = json_decode($response->getBody(), true); 
-        return $this->response->setJSON($body['data']);
-    }   
+    $body = json_decode($response->getBody(), true); 
+    return $this->response->setJSON($body['data']);
+}
 
     public function buy()
 {

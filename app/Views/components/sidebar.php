@@ -35,8 +35,6 @@
                 <span>Profile</span>
             </a>
         </li><!-- End Home Nav -->
-
-        
         <?php
         }
         ?>

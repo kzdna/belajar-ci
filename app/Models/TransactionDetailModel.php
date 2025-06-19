@@ -12,4 +12,3 @@ class TransactionDetailModel extends Model
         'transaction_id', 'product_id', 'jumlah', 'diskon', 'subtotal_harga', 'created_at', 'updated_at'
     ];
 }
-    

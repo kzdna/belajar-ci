@@ -55,7 +55,15 @@ class Home extends BaseController
     return view('v_profile', $data);
 }
     public function contact(){
-         $username = session()->get('username');
+            $session = session();
+            $data = [
+        'username' => $session->get('username'),
+        'role' => $session->get('role'),
+        'email' => $session->get('email'),
+        'login_time' => $session->get('login_time'),
+        'isLoggedin' => $session->get('isLoggedin')
+    ];
+    return view('v_contact', $data);
         
     }
 }
